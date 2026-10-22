@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  ratecraft:
+    build: .
+    image: freelance-rate-calculator:latest
+    container_name: ratecraft-studio
+    ports:
+      - "8083:80"
+    restart: unless-stopped

@@ -1,0 +1,20 @@
+{
+  "name": "freelance-rate-calculator",
+  "version": "1.0.0",
+  "description": "Value-based freelance and boutique agency rate calculator with tax/expense buffers, capacity modeling, and client proposal generator.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "freelance",
+    "rate-calculator",
+    "pricing-tool",
+    "agency-calculator",
+    "consulting",
+    "proposal-generator"
+  ],
+  "author": "Max",
+  "license": "MIT"
+}

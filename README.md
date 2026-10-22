@@ -118,5 +118,19 @@ node test/calculator.test.js
 
 ---
 
+## 💰 Monetization & Commercial Potential
+
+RateCraft Pro operates in the high-ticket freelancer and digital agency software market (over 70M knowledge workers globally):
+
+1. **Freemium Micro-SaaS ($9/month or $49/year)**:
+   - Free: Basic rate calculation and markdown proposal copy.
+   - Pro: Branded PDF proposal generator with custom logo/colors, client-facing interactive price quote link, Stripe deposit payment checkout integration, and multi-currency exchange rates.
+2. **Turnkey Digital Product on Gumroad / Notion Marketplace ($29–$69)**:
+   - Package RateCraft code alongside Notion freelance CRM templates, client service agreements, and proposal decks.
+3. **Agency Whitelabel License ($199 one-time)**:
+   - Boutique agencies can self-host RateCraft on their domain as a client lead magnet to capture inbound client project inquiries and pre-qualify budgets.
+
+---
+
 ## 📄 License
 MIT License. Free for commercial and personal projects.
