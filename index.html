@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RateCraft Pro | Value-Based Freelance & Agency Pricing Modeler</title>
+  <meta name="description" content="Calculate minimum viable and target hourly, day, sprint, and retainer rates with realistic tax buffers, unbillable time, and fixed-fee project milestone estimation.">
+  <meta property="og:title" content="RateCraft Pro - Freelance & Agency Rate Calculator">
+  <meta property="og:description" content="Stop undercharging. Calculate your true profitable freelance and agency rates with tax, expense, and profit margin modeling.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            RateCraft Pro
+            <span class="brand-tag">v1.0 Commercial</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button id="copy-proposal-btn" class="btn btn-primary" title="Copy formatted client pricing proposal">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Client Proposal
+        </button>
+        <button id="reset-btn" class="btn btn-secondary">Reset</button>
+      </div>
+    </header>
+
+    <!-- Industry Presets Strip -->
+    <div class="presets-strip">
+      <span class="presets-label">Archetypes:</span>
+      <button class="preset-chip active" data-preset="seniorDev">Senior Full-Stack Engineer</button>
+      <button class="preset-chip" data-preset="productDesigner">Lead UI/UX Designer</button>
+      <button class="preset-chip" data-preset="boutiqueStudio">Boutique Agency (Small Team)</button>
+      <button class="preset-chip" data-preset="midFreelancer">Independent Web Developer</button>
+    </div>
+
+    <!-- Hero Rates Grid -->
+    <div class="hero-rates-grid">
+      <div class="rate-hero-card primary">
+        <div class="card-label">
+          <span>Target Hourly Rate</span>
+          <span style="color: var(--accent-emerald);">★ Recommended</span>
+        </div>
+        <div id="rate-target-hourly" class="rate-value accent">$0</div>
+        <div class="card-subtext">Includes taxes, costs & 20% profit reserve</div>
+      </div>
+
+      <div class="rate-hero-card">
+        <div class="card-label">Minimum Viable Rate</div>
+        <div id="rate-min-hourly" class="rate-value text-slate-300">$0</div>
+        <div class="card-subtext">Absolute break-even without profit buffer</div>
+      </div>
+
+      <div class="rate-hero-card">
+        <div class="card-label">Day Rate (7.5h)</div>
+        <div id="rate-day" class="rate-value">$0</div>
+        <div class="card-subtext">Standard client daily booking rate</div>
+      </div>
+
+      <div class="rate-hero-card">
+        <div class="card-label">Weekly Dedicated Sprint</div>
+        <div id="rate-weekly" class="rate-value text-sky-400">$0</div>
+        <div class="card-subtext">5-day dedicated focus (5% package discount)</div>
+      </div>
+
+      <div class="rate-hero-card">
+        <div class="card-label">Monthly Retainer</div>
+        <div id="rate-monthly-retainer" class="rate-value text-purple-400">$0</div>
+        <div class="card-subtext">Continuous advisory (10% loyalty discount)</div>
+      </div>
+    </div>
+
+    <!-- Main Calculator Grid -->
+    <div class="calculator-grid">
+      <!-- Left: Financial & Operational Inputs -->
+      <aside class="inputs-column">
+        <div class="glass-panel">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Personal Income & Operating Overhead
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="input-salary">Target Net Take-Home Salary (Annual)</label>
+            <div class="input-addon-wrapper">
+              <span class="input-addon">$</span>
+              <input type="number" id="input-salary" class="input-field" step="5000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="input-expenses">Monthly Business Overhead (Software, Gear, Hosting)</label>
+            <div class="input-addon-wrapper">
+              <span class="input-addon">$</span>
+              <input type="number" id="input-expenses" class="input-field" step="50">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label class="form-label" for="input-tax-rate">Estimated Effective Tax Rate</label>
+              <span id="val-tax-rate" class="form-val-display">28%</span>
+            </div>
+            <input type="range" id="input-tax-rate" min="0" max="55" step="1">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label class="form-label" for="input-profit-buffer">Business Profit Reserve & Reinvestment</label>
+              <span id="val-profit-buffer" class="form-val-display">20%</span>
+            </div>
+            <input type="range" id="input-profit-buffer" min="0" max="40" step="5">
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Capacity & Unbillable Time
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label class="form-label" for="input-vacation">Annual Vacation / Time Off</label>
+              <span id="val-vacation" class="form-val-display">5 wks</span>
+            </div>
+            <input type="range" id="input-vacation" min="0" max="12" step="1">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label class="form-label" for="input-sick">Sick Leave & Public Holidays</label>
+              <span id="val-sick" class="form-val-display">14 days</span>
+            </div>
+            <input type="range" id="input-sick" min="0" max="30" step="1">
+          </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label class="form-label" for="input-billable-hours">Billable Focus Hours / Day</label>
+              <span id="val-billable-hours" class="form-val-display">5.0 hrs/day</span>
+            </div>
+            <input type="range" id="input-billable-hours" min="2" max="10" step="0.5">
+            <div class="text-xs text-slate-500 mt-1">Realistic client work time excluding admin, marketing & invoices</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right: Allocations & Project Scope Modeler -->
+      <main class="analytics-column">
+        <!-- Revenue Distribution Breakdown -->
+        <div class="glass-panel">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            Annual Gross Revenue Allocation
+          </div>
+
+          <div class="distribution-bar-wrapper">
+            <div class="distribution-bar">
+              <div id="bar-salary" class="bar-segment bar-salary" style="width: 50%;"></div>
+              <div id="bar-taxes" class="bar-segment bar-taxes" style="width: 25%;"></div>
+              <div id="bar-expenses" class="bar-segment bar-expenses" style="width: 10%;"></div>
+              <div id="bar-profit" class="bar-segment bar-profit" style="width: 15%;"></div>
+            </div>
+
+            <div class="legend-grid">
+              <div class="legend-item">
+                <span class="legend-dot bar-salary"></span>
+                <span>Net Salary: <strong id="legend-salary" class="text-slate-200">$0</strong></span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot bar-taxes"></span>
+                <span>Taxes: <strong id="legend-taxes" class="text-slate-200">$0</strong></span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot bar-expenses"></span>
+                <span>Overhead: <strong id="legend-expenses" class="text-slate-200">$0</strong></span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot bar-profit"></span>
+                <span>Profit Buffer: <strong id="legend-profit" class="text-slate-200">$0</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 14px; font-size: 0.85rem;">
+            <div>Target Annual Gross Revenue: <strong id="stat-annual-revenue" class="text-emerald-400">$0</strong></div>
+            <div>Billable Hours / Year: <strong id="stat-billable-hours" class="text-slate-200">0 hrs</strong></div>
+            <div>Utilization Rate: <strong id="stat-utilization" class="text-slate-200">0%</strong></div>
+          </div>
+        </div>
+
+        <!-- Project Fixed-Price Estimator -->
+        <div class="glass-panel">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            Project Fixed-Price Estimator & Milestones
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label" for="input-project-hours">Estimated Scope (Hours)</label>
+              <input type="number" id="input-project-hours" class="input-field" style="padding-left: 12px;" min="1" step="5">
+            </div>
+
+            <div class="form-group" style="margin: 0;">
+              <div class="form-label-row">
+                <label class="form-label" for="input-contingency">Scope Creep Contingency Buffer</label>
+                <span id="val-contingency" class="form-val-display">+20%</span>
+              </div>
+              <input type="range" id="input-contingency" min="0" max="50" step="5">
+            </div>
+          </div>
+
+          <div style="background: var(--bg-control); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div class="text-xs text-slate-400">Total Fixed Investment Quote</div>
+              <div id="project-total-fee" style="font-size: 1.8rem; font-weight: 800; color: var(--accent-emerald);">$0</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="text-xs text-slate-400">Effective Billable Hours</div>
+              <div id="project-effective-hours" style="font-size: 1.2rem; font-weight: 700; color: #ffffff;">0 hrs</div>
+            </div>
+          </div>
+
+          <!-- Milestones breakdown -->
+          <div class="milestones-grid">
+            <div class="milestone-card">
+              <div class="milestone-card-title">Schedule A: 50 / 50 Standard</div>
+              <div class="milestone-step">
+                <span class="text-slate-400">50% Upfront Kickoff Deposit</span>
+                <strong id="split-50-deposit" class="text-emerald-400">$0</strong>
+              </div>
+              <div class="milestone-step">
+                <span class="text-slate-400">50% Upon Final Hand-off</span>
+                <strong id="split-50-final" class="text-emerald-400">$0</strong>
+              </div>
+            </div>
+
+            <div class="milestone-card">
+              <div class="milestone-card-title">Schedule B: 40 / 30 / 30 Multi-Stage</div>
+              <div class="milestone-step">
+                <span class="text-slate-400">40% Kick-off Deposit</span>
+                <strong id="split-40-deposit" class="text-sky-400">$0</strong>
+              </div>
+              <div class="milestone-step">
+                <span class="text-slate-400">30% Beta Milestone Delivery</span>
+                <strong id="split-30-milestone" class="text-sky-400">$0</strong>
+              </div>
+              <div class="milestone-step">
+                <span class="text-slate-400">30% Final Production Launch</span>
+                <strong id="split-30-final" class="text-sky-400">$0</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Scripts -->
+  <script src="js/calculator.js"></script>
+  <script src="js/presets.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
